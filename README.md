@@ -31,7 +31,7 @@ The following databases will be used in the application:
 3. Enrichment database. This database provides amplifying information about project workflow and includes fields FEMA personnel will need to enter.
 4. User database. The application needs to be secure and will require a login feature.
 
-!(/models.svg)
+![models](/models.svg)
 
 # Schedule
 
