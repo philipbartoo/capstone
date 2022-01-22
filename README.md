@@ -1,10 +1,10 @@
-#Project Overview
+# Project Overview
 
 **Problem**: FEMA Mitigation personnel do not have a single knowledge management solution for managing $1.6 Billion in grants which is resulting in delays closing out projects.  Coordination is taking place via email and spreadsheets without a single source of truth. Managers cannot determine the exact status of a project without heavy email coordination.
 
 **Proposal**: This app integrates data from FEMA grant application systems with locally collected information to easily track the workflow status of each grant funded project.
 
-#Functionality
+# Functionality
 
 The user experience will begin with a login screen from which they access the application. Each user will require a username, password and email.  A registration page will be provided if they do not have credentials.  This information will update a user database.
 
@@ -23,31 +23,31 @@ The following constitutes the minimum viable product requirements:
 * Disaster and Project information import via user button that will complete a a full outer join of  the .csv files.  This button will utilize JavaScript
 * Cascading dropdown filter. To enable users to quickly filter to their project of interest a cascading dropdown filter will be provided on the main page.
 
-#Data Model
+# Data Model
 
 The following databases will be used in the application:
-	1. Disaster database. This database tracks all declared disasters. This information is 			provided from headquarters daily and should not be edited by users.
-	2. Project database. This database lists all projects that are associated with a declared disaster
-	3. Enrichment database. This database provides amplifying information about project workflow and includes fields FEMA personnel will need to enter.
-	4. User database. The application needs to be secure and will require a login feature.
+1. Disaster database. This database tracks all declared disasters. This information is 			provided from headquarters daily and should not be edited by users.
+2. Project database. This database lists all projects that are associated with a declared disaster
+3. Enrichment database. This database provides amplifying information about project workflow and includes fields FEMA personnel will need to enter.
+4. User database. The application needs to be secure and will require a login feature.
 
-![data model](/models.svg)
+!(/models.svg)
 
-#Schedule
+# Schedule
 
-By **1/21/2022**: Complete markdown and project plan
-By **1/28/2022**: Build initial App
-		-Set up environment and Django, import libraries
-		-Construct Models
-		-Construct URLs
-		-Construct Login View and template
-By **2/4/2022**:  Build Disaster and Project List and Details
-		-Build Disaster List view and template
-		-Build Disaster Detail view and template
-		-Build Project List view and template
-		-Build Project Detail view and template
-By **2/11/2022**:  Build functions
-		-.csv import feature
-		-cascading dropdown feature
-		-workflow status indicator 
-By **2/11/2022**: Complete
+* By **1/21/2022**: Complete markdown and project plan
+* By **1/28/2022**: Build initial App
+		*Set up environment and Django, import libraries
+		*Construct Models
+		*Construct URLs
+		*Construct Login View and template
+* By **2/4/2022**:  Build Disaster and Project List and Details
+		*Build Disaster List view and template
+		*Build Disaster Detail view and template
+		*Build Project List view and template
+		*Build Project Detail view and template
+* By **2/11/2022**:  Build functions
+		*.csv import feature
+		*cascading dropdown feature
+		*workflow status indicator 
+* By **2/11/2022**: Complete
