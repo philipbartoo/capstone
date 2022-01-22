@@ -36,18 +36,7 @@ The following databases will be used in the application:
 # Schedule
 
 * By **1/21/2022**: Complete markdown and project plan
-* By **1/28/2022**: Build initial App
-		*Set up environment and Django, import libraries
-		*Construct Models
-		*Construct URLs
-		*Construct Login View and template
-* By **2/4/2022**:  Build Disaster and Project List and Details
-		*Build Disaster List view and template
-		*Build Disaster Detail view and template
-		*Build Project List view and template
-		*Build Project Detail view and template
-* By **2/11/2022**:  Build functions
-		*.csv import feature
-		*cascading dropdown feature
-		*workflow status indicator 
-* By **2/11/2022**: Complete
+* By **1/28/2022**: Build initial App, Set up environment and Django, Import libraries, Construct Models, Construct URLs, Construct Login View and template
+* By **2/4/2022**:  Build Disaster and Project List and Details, Build Disaster List view and template, Build Disaster Detail view and template, Build Project List view and template, Build Project Detail view and template
+* By **2/11/2022**:  Build functions: .csv import feature, cascading dropdown feature, workflow status indicator 
+* By **2/11/2022**: Complete project
