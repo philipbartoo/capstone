@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% block title %}{{ project.project_identifier }}{% endblock %}
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container">
+  <h1 class="heading">Basic Project Details</h1>
+</div>
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3 p-2 label">Project Identifier
+      <div class="card card-padding">{{ projects.project_identifier }}</div>
+    </div>
+    <div class="col-lg-9 p-2 label">Project Title
+      <div class="card card-padding">{{ projects.project_title}}</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 p-2 label">State
+      <div class="card card-padding">{{ projects.assigned_state }}</div>
+    </div>
+    <div class="col-lg-4 p-2 label">County
+      <div class="card card-padding">{{ projects.county }} </div>
+    </div>
+    <div class="col-lg-4 p-2 label">Disaster Number:
+      <div class="card card-padding">{{ projects.assigned_disaster_number }} </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 p-2 label">Application ID
+      <div class="card card-padding">{{ projects.application_id }} </div>
+    </div>
+    <div class="col-lg-3 p-2 label">Status
+      <div class="card card-padding">{{ projects.status }}</div>
+    </div>
+    <div class="col-lg-3 p-2 label">Program Area
+      <div class="card card-padding">{{ projects.program_area }} </div>
+    </div>
+    <div class="col-lg-3 p-2 label">Subgrantee
+      <div class="card card-padding">{{ projects.subgrantee }}</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 p-2 label">Type
+      <div class="card card-padding">{{ projects.type }} </div>
+    </div>
+    <div class="col-lg-6 p-2 label">Project Counties
+      <div class="card card-padding">{{ projects.project_counties}} </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 p-2 label">Environmental Document Type
+      <div class="card card-padding">{{ projects.environmental_document_type }} </div>
+    </div>
+    <div class="col-lg-3 p-2 label">Subgrantee Tribal Indicator
+      <div class="card card-padding">{{ projects.subgrantee_tribal_indicator }}</div>
+    </div>
+    <div class="col-lg-3 p-2 label">Primary Hazard
+      <div class="card card-padding">{{ projects.primary_hazard }}</div>
+    </div>
+    <div class="col-lg-3 p-2 label">Cost Share Percent
+      <div class="card card-padding">{{ projects.cost_share_percent }}</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 p-2 label">Date Approved
+      <div class="card card-padding">{{ projects.date_approved }} </div>
+    </div>
+    <div class="col-lg-2 p-2 label">Date Closed
+      <div class="card card-padding">{{ projects.date_closed }}</div>
+    </div>
+    <div class="col-lg-2 p-2 label">Date Submitted
+      <div class="card card-padding">{{ projects.date_submitted }}</div>
+    </div>
+    <div class="col-lg-2 p-2 label">Date Received
+      <div class="card card-padding">{{ projects.date_received }} </div>
+    </div>
+    <div class="col-lg-4 p-2 label">Date Initially Approved
+      <div class="card card-padding">{{ projects.date_initially_approved }} </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 p-2 label">Project Amount
+        <div class="card card-padding">${{ projects.project_amount|intcomma  }} </div>
+      </div>
+      <div class="col-lg-3 p-2 label">Federal Share Proposed
+        <div class="card card-padding">${{ projects.federal_share_proposed|intcomma  }}</div>
+      </div>
+      <div class="col-lg-3 p-2 label">Federal Share Obligated
+        <div class="card card-padding">${{ projects.federal_share_obligated|intcomma  }}</div>
+      </div>
+      <div class="col-lg-3 p-2 label">Non Federal Share
+        <div class="card card-padding">${{ projects.non_federal_share|intcomma  }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="heading">Enriching Project Data</div>
+  <div class="container">
+    <div class="row">
+      
+      {% for item in object.enrichment_set.all %}
+      <ul>
+        <li class="paragraph list-item">
+          <a href="{% url 'enrichment_edit' item.pk %}"
+            class="list-group-item list-group-item-action list-group-item-light">{{item.project_deliverable_number}} | {{ item.project_deliverable_title }}</a>
+        </li>
+      </ul>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4 d-flex justify-content-center">
+      <a href="{% url 'enrichment_add' %}"><button type="button" class="btn btn-secondary m-3">New Enriching Form</button></a>
+    </div>
+    <div class="col-sm-4"></div>
+    </div>
+</div>
+{% endblock %}

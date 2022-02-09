@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% block content %}
+{% block title %}{{ item.assigned_project_identifier }} Details{% endblock %}
+
+<h1 class='details'>{{ post.title }}</h1>
+<h2 class="paragraph">{{ post.author.first_name }}  {{ post.author.last_name }}  Created: {{ post.date_created }} |  
+
+    <p class="paragraph">{{ post.body }}</p>
+{% endblock %}

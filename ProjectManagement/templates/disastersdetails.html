@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}{{ disaster.disaster_number }}{% endblock %}
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row">
+        <h1 class="heading col-lg-10">Disaster Details</h1>
+        <div class="col-lg-4 p-2 label">State
+          <div class="card card-padding">{{ disasters.state }}</div>
+        </div>
+        <div class="col-lg-4 p-2 label">Disaster Number:
+          <div class="card card-padding">{{ disasters.disaster_number }} </div>
+        </div>
+        <div class="col-lg-4 p-2 label">Declaration Date
+          <div class="card card-padding">{{ diasters.declaration_date }} </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 p-2 label">Approved Projects
+          <div class="card card-padding">{{ disasters.number_of_approved_projects }} </div>
+        </div>
+        <div class="col-lg-4 p-2 label">Pending Projects
+          <div class="card card-padding">{{ disasters.number_of_pending_projects }}</div>
+        </div>
+        <div class="col-lg-4 p-2 label">HMGP Closeout Status
+          <div class="card card-padding">{{ disasters.hmgp_closeout_status }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 p-2 label">Due Date For New Apps
+          <div class="card card-padding">{{ disasters.disaster_due_date_for_new_apps }} </div>
+        </div>
+        <div class="col-lg-6 p-2 label">Period Of Performance End Date
+          <div class="card card-padding">{{ disasters.disaster_period_of_performance_end_date }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 p-2 label">12 Month Lock In
+          <div class="card card-padding">${{ disasters.twelve_month_lock_in_amount|intcomma }} </div>
+        </div>
+        <div class="col-lg-6 p-2 label">Locked In Ceiling
+          <div class="card card-padding">${{ disasters.locked_in_ceiling_amount|intcomma }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 p-2 label">Projected Regular Amount
+          <div class="card card-padding">${{ disasters.projected_regular_amount|intcomma }} </div>
+        </div>
+        <div class="col-lg-6 p-2 label">Total Allocated
+          <div class="card card-padding">${{ disasters.allocated_total_amount|intcomma }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 p-2 label">MT Project Dollars Available
+          <div class="card card-padding">${{ disasters.mt_project_dollars_available|intcomma }} </div>
+        </div>
+        <div class="col-lg-6 p-2 label">MT Federal Share Obligated
+          <div class="card card-padding">${{ disasters.mt_federal_share_obligated|intcomma }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 p-2 label">MT Dollars Available
+          <div class="card card-padding">${{ disasters.mt_dollars_available|intcomma }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center projected-available">Projected Costs</div>
+        <div class="col-lg-6 p-2">Initiative
+          <div class="card card-padding">${{ disasters.projected_initiative_amount|intcomma }} </div>
+        </div>
+        <div class="col-lg-6 p-2 label">Planning
+          <div class="card card-padding">${{ disasters.projected_planning_amount|intcomma }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 p-2 label">Recipient Management
+          <div class="card card-padding">${{ disasters.projected_recipient_management_costs|intcomma }} </div>
+        </div>
+        <div class="col-lg-6 p-2 label">Subrecipient Management
+          <div class="card card-padding">${{ disasters.projected_subrecipient_management_costs|intcomma }} </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center projected-available">Available Costs</div>
+        <div class="col-lg-6 p-2">Initiative
+          <div class="card card-padding">${{ disasters.available_initiative_amount|intcomma }} </div>
+        </div>
+        <div class="col-lg-6 p-2 label">Planning
+          <div class="card card-padding">${{ disasters.available_planning_amount|intcomma }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6 p-2 label">Recipient Management
+          <div class="card card-padding">${{ disasters.available_recipient_management_costs|intcomma }}</div>
+        </div>
+        <div class="col-lg-6 p-2 label">Subrecipient Management
+          <div class="card card-padding">${{ disasters.available_subrecipient_management_costs|intcomma }}</div>
+        </div>
+      </div>
+    </div>
+    
+
+  
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="heading">Project List</div>
+        {% for project in object.projects_set.all %}
+        <div class="text-center">
+          <div class ="paragraph list-item">
+            <a href="{% url 'projectdetail' project.pk %}"
+                class="list-group-item list-group-item-action list-group-item-light">{{project.project_identifier}}</a>
+          </div>
+        </div>
+        
+       
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+{% endblock %}

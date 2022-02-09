@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}{{ disaster.disaster_number }}{% endblock %}
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">{% include 'disasterdetails.html' %}
+    </div>
+    <div class="col-sm-4">{% include 'projectlist.html' %}
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include 'navbar.html' %}
+<div class="row">
+  <div class="d-inline-flex">
+    <div class="d-flex h-100 sidenav-details flex-column flex-shrink-0 p-3 text-white bg-dark text-center"
+      style="width: 200px;">
+      <span class="fs-4">Project Filter</span>
+      <hr>
+      <div class="nav nav-pills flex-column mb-auto">
+        <div class="nav-item">
+          <form method="get">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="form-group">{{ project_filter.form|crispy }}</div>
+            </div>
+            <div class="text-center">
+              <button id="filterbtn2" class="btn btn-outline-primary input-group-append mt-4" type="submit">Filter</button>
+              <button type="button" onclick="projectfilter();" class="btn btn-outline-primary input-group-append mt-4">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h1 class="heading">Project List</h1>
+      <div class="row">
+        {% for item in project_filter.qs %}
+        <div class="paragraph list-item">
+          <a href="{% url 'projectdetail' item.pk %}"
+            class="list-group-item list-group-item-action list-group-item-light">{{ item.project_identifier }} |
+            {{ item.project_title }}</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+   
+    
+
+{% endblock %}
