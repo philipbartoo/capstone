@@ -6,18 +6,25 @@ from csv import DictReader
 #import pyperclip
 
 class Command(BaseCommand):
-    help = 'Imports Disasters csv'
+    help = 'Imports Projects csv'
 
     def handle(self, *args, **kwargs):
-        Disasters.objects.all().delete()
-        with open('test3.csv', encoding='utf-8-sig') as csv_file:
+
+        inputfile=csv.reader(open('testprojects.csv','r'))
+        outputfile=open('cleanprojects.csv','w')
+
+        for row in inputfile:
+            row[7].replace('; \n','')
+            outputfile.write()
+        
+        ''' with open('testprojects.csv', encoding='utf-8') as csv_file:
             csv_reader=csv.DictReader(csv_file, delimiter=",")
             for row in csv_reader:
                 disasters=Disasters()
                 disasters.disaster_number=row["Disaster Number"]
                 disasters.state=row["State"]
-                print(row)
-                disasters.save()
+                print(row)'''
+                
             
             #disaster = Disasters.objects.create(
             #    disaster_number=disaster_number,

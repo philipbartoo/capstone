@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+
+<h1 class="heading">Register</h1>
+<br /><br />
+<div class="container">
+    <div class="row">
+        <div class="form-group">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {{form.errors}}
+                <br />
+                <button class="btn btn-primary" type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

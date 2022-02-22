@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include 'navbar.html' %}
+{% if user.is_authenticated %}
+<div class="heading">Upload Disaster File</div>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            
+            <form action="{% url 'ProjectManagementApp:upload_disaster' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="disaster_file">
+                <input type="submit" class="btn-primary btn" value="Import">
+            </form>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+
+{% else %}
+You must login first
+{% endif %}
+{% endblock %}

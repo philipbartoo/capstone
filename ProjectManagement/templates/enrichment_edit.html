@@ -5,7 +5,7 @@
 {% block content %}
 {% block title %}{{ item.assigned_project_identifier }}{% endblock %}
 {% include 'navbar.html' %}
-
+{% if user.is_authenticated %}
 <h1 class='heading'>Project Enrichment Data for {{ enrichment.assigned_project_identifier }}</h1>
 <br/>
 <div class="container">
@@ -14,15 +14,15 @@
     <div class="col-sm-8">
       <form method="POST">
         {% csrf_token %}
-        {% crispy form %}
+        
         {{ form.as_p }}
         <div class="container">
           <div class="row">
             <div class="col-sm-8">
-              <button class="btn btn-primary m-3">Update</button> <a href="{% url 'home' %}" class="btn btn-secondary m-3">Cancel</a>
+              <button class="btn btn-primary m-3">Update</button> <a href="{% url 'ProjectManagementApp:home' %}" class="btn btn-secondary m-3">Cancel</a>
             </div>
             <div class="col-sm-4">
-              <a href="{% url 'enrichment_delete' enrichment.pk %}" class="btn btn-warning m-3">Delete</a>
+              <a href="{% url 'ProjectManagementApp:enrichment_delete' enrichment.pk %}" class="btn btn-warning m-3">Delete</a>
             </div>
           </div>
         </div>
@@ -32,5 +32,7 @@
   </div>
 
 
-
+  {% else %}
+  You must login first
+  {% endif %}
   {% endblock %}

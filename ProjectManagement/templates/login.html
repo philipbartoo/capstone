@@ -4,17 +4,24 @@
 
 <h1 class="heading">Welcome To Project Management</h1>
 <br /><br />
-<h2 class="paragraph"></h2>
-<div class="form-group blog-article">
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-primary">Login</button>
-        <button class="btn btn-secondary">
-            <a href="{% url 'register' %}">Register</a>
-        </button>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="form-group blog-article">
+            <form action="{% url 'ProjectManagementApp:home' %}" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {{form.errors}}
+                <br />
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
+            <br />
+            <a href="{% url 'ProjectManagementApp:register' %}"><button class="btn btn-secondary">Register</button></a>
+            </button>
+        </div>
+    </div>
 </div>
+
+
 
 
 

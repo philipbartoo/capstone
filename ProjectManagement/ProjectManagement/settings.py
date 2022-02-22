@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_filters',
     'crispy_forms',
-    'import_export',
+    'members',
+
 ]
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
@@ -138,4 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_files')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+LOGIN_URL='members/login'
+LOGIN_REDIRECT_URL = '/home' # URL redirecting after a successful authentication
+LOGOUT_REDIRECT_URL='login'

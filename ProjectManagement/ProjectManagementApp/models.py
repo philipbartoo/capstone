@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 class Csvs(models.Model):
-    disaster_file=models.FileField()
+    disaster_file=models.FileField(upload_to='disasters/')
 
     def __str__(self):
         return f"File: {self.id} | {self.disaster_file}"
@@ -31,6 +31,7 @@ class Disasters(models.Model):
     available_subrecipient_management_costs = models.DecimalField(max_digits=12, decimal_places=2,blank=True,null=True)
     available_initiative_amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True,null=True)
     available_planning_amount = models.DecimalField(max_digits=12, decimal_places=2,blank=True,null=True)
+    disaster_closeout_status = models.CharField(max_length=25,blank=True,null=True)
     hmgp_closeout_status = models.CharField(max_length=25,blank=True,null=True)
 
     def __str__(self):
@@ -38,14 +39,14 @@ class Disasters(models.Model):
 
 class Projects(models.Model):
     assigned_disaster_number= models.ForeignKey(Disasters, blank=True,null=True,on_delete=models.CASCADE)
-
+    
     county = models.CharField(max_length=50,blank=True,null=True)
     program_area = models.CharField(max_length=35,blank=True,null=True)
     subgrantee = models.CharField(max_length=200,blank=True,null=True)
     project_identifier = models.CharField(max_length=25,blank=True)
     application_id = models.CharField(max_length=10,blank=True,null=True)
     primary_hazard = models.CharField(max_length=50,blank=True,null=True)
-    type = models.CharField(max_length=200,blank=True,null=True)
+    type = models.TextField(blank=True,null=True)
     project_title = models.CharField(max_length=200,blank=True,null=True)
     project_counties = models.CharField(max_length=200,blank=True,null=True)
     status = models.CharField(max_length=50,blank=True,null=True)

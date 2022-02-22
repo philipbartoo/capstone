@@ -1,10 +1,14 @@
+
+from encodings import utf_8
 from django.shortcuts import render
-#from django.http import HttpResponse
+from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-#from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+#from django.contrib.auth import authenticate
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserChangeForm
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView,FormView,View
 from .models import Disasters, Enrichment, Projects,Csvs
 from .forms import RegisterForm,NewEnrichmentForm,EditEnrichmentForm
@@ -13,13 +17,19 @@ from .filters import DisasterFilter,ProjectFilter
 #from django_filters.views import FilterView
 #from tablib import Dataset
 #from .resources import DisasterResource
-#import csv
+import csv
 #from django.views.generic.edit import FormView
+from datetime import datetime
+#from dateutil import parser
+import pandas as pd
+import numpy as np
+import re
+
 
 
 class LoginInterfaceView(LoginView):
     template_name = 'login.html'
-    LOGIN_REDIRECT_URL = ''
+    success_url = reverse_lazy('home')
 
 class LogoutInterfaceView(LogoutView):
     template_name = 'logout.html'
@@ -28,70 +38,87 @@ class SignupView(CreateView):
     form_class = RegisterForm
     template_name = 'register.html'
     success_url = reverse_lazy('home')
-    
 
-class HomeView(LoginRequiredMixin, ListView):
+class UserEditView(UpdateView):
+    form_class=UserChangeForm
+    template_name="profile.html"
+    success_url=reverse_lazy('home')
+
+    def get_object(self):
+        return self.request.user
+
+
+class HomeView(LoginRequiredMixin,ListView):
     model = Disasters
     template_name = 'home.html'
-    #ordering = ['-date_created']
-    login_url = "login"
+    ordering = ['-disaster_number']
+    login_url = 'login'
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponse("User Profile View")
 
 
 
-class DisastersDetailView(LoginRequiredMixin, DetailView):
+
+class DisastersDetailView(DetailView):
     model = Disasters
     template_name = 'disastersdetails.html'
-    login_url = "login"
+    login_required=True
+    redirect_field_name = 'redirect_to'
+    
 
-class DisastersListView(LoginRequiredMixin, ListView):
+class DisastersListView(ListView):
     model = Disasters
     template_name = 'disasterslist.html'
-    login_url = "login"
+    login_required=True
 
 
+    
 
-class ProjectDetailView(LoginRequiredMixin, DetailView):
+
+class ProjectDetailView(DetailView):
     model = Projects
     template_name = 'projectdetails.html'
-    login_url = "login"
+    
 
-class ProjectListView(LoginRequiredMixin, ListView):
+class ProjectListView(ListView):
     model = Projects
     template_name = 'projectlist.html'
-    login_url = "login"
+    
 
-class EnrichmentListView(LoginRequiredMixin, ListView):
+class EnrichmentListView(ListView):
     model = Enrichment
     template_name = 'enrichment_list.html'
-    login_url = 'login'
+    
 
 class EnrichmentAddView(CreateView):
     form_class = NewEnrichmentForm
     template_name = 'enrichment_add.html'
-    login_url = 'login'
+    success_url=reverse_lazy('ProjectManagementApp:home')
+    
 
-    def form_valid(self, form):
+    '''def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(self.get_success_url())'''
 
-class EnrichmentDetailView(LoginRequiredMixin,DetailView):
+class EnrichmentDetailView(DetailView):
     model = Enrichment
     template_name = 'enrichment_detail.html'
-    login_url = 'login'
+    
 
-class EnrichmentEditView(LoginRequiredMixin,UpdateView):
+class EnrichmentEditView(UpdateView):
     model = Enrichment
     form_class = EditEnrichmentForm
     template_name = 'enrichment_edit.html'
-    login_url = 'login'
+    success_url = reverse_lazy('ProjectManagementApp:home')
+    
 
-class EnrichmentDeleteView(LoginRequiredMixin, DeleteView):
+class EnrichmentDeleteView(DeleteView):
     model = Enrichment
     template_name = 'enrichment_delete.html'
-    login_url = 'login'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('ProjectManagementApp:home')
 
 def disaster_search_view(request):
     disaster_list=Disasters.objects.all()
@@ -121,118 +148,297 @@ def project_search_view(request):
 
 
 def upload_disaster_file(request):
-    disasters_file=request.FILES['disaster_file']
-    model=Csvs(disaster_file=disasters_file)
-    model.save()
     
-
-'''class UploadView(CreateView):
-    model=Csvs
-    fields=['disaster_file']
-    def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context
-
-
-def upload_disaster_file(request):
-    if request.method == 'POST':
-        form = UploadDisasterForm(request.POST,request.FILES)
-        form.save()
-    else:
-        form=UploadDisasterForm()
-        context={
-            'form':form
-        }
-    return render(request,'upload.html',context)'''
-
-'''disaster_file = request.FILES['disaster_file']
-    model = Csvs(..., disaster_file=disaster_file)
-    model.save()'''
-
-'''def upload_file_view(request):
-    form=CsvModelForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save()
-        form=CsvModelForm()
-        obj=Csvs.objects.get(activated=False)
+    if request.method=='POST':
+        print(request.FILES)
+        disasters_file=request.FILES['disaster_file'].file
         Disasters.objects.all().delete()
-        #disasters=Disasters()
-        #form=ImportForm(request.POST or None, request.FILES or None)
-        #file=request.FILES['test4.csv']
-        
-        with open(obj.file_name.path,'r',encoding='utf-8-sig') as csv_file:
-            csv_reader=csv.DictReader(csv_file, delimiter=",")
-            for row in csv_reader:
-                disasters=Disasters()
-                disasters.disaster_number=row["Disaster Number"]
-                disasters.state=row["State"]
-                print(row)
-                disasters.save()
-            obj.activated=True
-            obj.save()
-    
-    return render(request, 'upload.html')'''
+            
+        lines=disasters_file.readlines()
+        count=0
+        for line in lines:
+            if count==0:
+                print(line)
+                count+=1
+                continue
+            line=line.decode("utf-8")
+            line=str(line)
+            field=line.split(",")
 
 
-'''disaster_resource = DisasterResource()
-        data_set = Dataset()
-        if form.is_valid():
-            file = request.FILES['test3.csv']
-            imported_data = data_set.load(file.read())
-            result = disaster_resource.import_data(data_set, dry_run=True)  # Test the data import
-
-            if not result.has_errors():
-                disaster_resource.import_data(data_set, dry_run=False)  # Actually import now
-
-        else:
-            form = ImportForm()'''
-        
-
-
-'''def upload_disaster_file(request):
-    #form=CsvModelForm(request.POST, request.FILES)
-    #form.save()
-    #form=CsvModelForm()
-    disaster_resource = DisasterResource()
-    dataset = Dataset()
-    new_disasters = request.FILES["test3.csv"]
-    dataset.load(new_disasters.read().decode("utf-8"), format="csv")
-    result = disaster_resource.import_data(dataset, dry_run=True, raise_errors=True)
-    
-
-    return render(request,'upload.html',{'form':form})'''
-
-
-'''Disasters.objects.all().delete()
-    new_disasters = request.FILES['test3.csv']
-    with new_disasters as csv_file:
-        csv_reader=csv.DictReader(csv_file,delimiter=",")
-        for row in csv_reader:
             disasters=Disasters()
-            disasters.disaster_number=row["Disaster Number"]
-            disasters.state=row["State"]
-            print(row)
+            disasters.disaster_number=str(field[0]).strip('"')
+
+            disasters.state=str(field[1]).strip('"')
+            disasters.number_of_projects=str(field[2]).strip('"')
+
+            data=str(field[3]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.twelve_month_lock_in_amount=float(data)
+
+            data=str(field[4]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.locked_in_ceiling_amount=float(data)
+           
+            data=str(field[5]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.mt_project_dollars_available=float(data)
+
+            data=str(field[6]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.mt_federal_share_obligated=float(data)
+           
+            data=str(field[7]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.mt_dollars_available=float(data)
+
+            data=str(field[8]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.allocated_total_amount=float(data)
+
+            disasters.number_of_approved_projects=str(field[9]).strip('"')
+            disasters.number_of_pending_projects=str(field[10]).strip('"')
+            
+            data=str(field[11]).strip('"')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+            print(f'Disaster Declaration: {data}')
+            disasters.declaration_date=data
+
+            data=str(field[12]).strip('"')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+                #print(f'PoP End: {data}')
+            disasters.disaster_period_of_performance_end_date=data
+
+            data=str(field[13]).strip('"')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+                #print(f'Due Date for New Apps: {data}')
+            disasters.disaster_due_date_for_new_apps=data
+
+            data=str(field[14]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.available_recipient_management_costs=float(data)
+            
+            data=str(field[15]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.available_subrecipient_management_costs=float(data)
+            
+            data=str(field[16]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.projected_recipient_management_costs=float(data)
+            
+            data=str(field[17]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.projected_subrecipient_management_costs=float(data)
+            
+            data=str(field[18]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.available_initiative_amount=float(data)
+            
+            data=str(field[19]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.available_planning_amount=float(data)
+            
+            data=str(field[20]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.projected_initiative_amount=float(data)
+            
+            data=str(field[21]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.projected_regular_amount=float(data)
+            
+            data=str(field[22]).strip('"')
+            if data=='':
+                data='0.00'
+            disasters.projected_planning_amount=float(data)
+            
+            #disasters.disaster_closeout_status=str(field[23]).strip('"')
+            
+            data=str(field[23]).strip('"')
+            data=data.strip()
+            disasters.disaster_closeout_status=data.rstrip('"')
+
+            data=str(field[24]).strip('"')
+            data=data.strip()
+            disasters.hmgp_closeout_status=data.rstrip('"')
+            
+            #disasters.disaster_number=line[1]
+            #disasters.state=line[2]
             disasters.save()
-   
-    return render(request, 'upload.html')'''
+            count+=1
+
+        return HttpResponseRedirect(reverse_lazy('ProjectManagementApp:home'))
+            
+    elif request.method=='GET':
+        return render (request, 'upload_disaster.html')
+    
+def upload_project_file(request):
+    if request.method=='POST':
+        print(request.FILES)
+        projects_file=request.FILES['project_file'].file
+        Projects.objects.all().delete()
+        
+            
+        lines=projects_file.readlines()
+        count=0
+        for line in lines:
+            if count==0:
+                count+=1
+                continue
+            
+            
+            line=line.decode("utf-8")
+            line=str(line)
+            
+            #line=line.replace('\r','')
+            #line=line.replace('\n','')
+            #line=line.replace('\b','')
+            field=line.split('","')
+           
+            projects=Projects()
+            disaster_number=str(field[0]).strip('"')
+            #print(disaster_number)
+            projects.assigned_disaster_number=Disasters.objects.get(disaster_number=disaster_number)
+            #print(projects.assigned_disaster_number)
+            
+            projects.county=str(field[2]).strip()
+            #print(f'Project County: {projects.county}')
+            
+            projects.program_area=str(field[3]).strip('"')
+
+            projects.project_identifier=str(field[4]).strip('"')
+            #print(f'Project Identifier: {projects.project_identifier}')
+            projects.application_id=str(field[5]).strip('"')
+            projects.primary_hazard=str(field[6]).strip('"')
+            #print(projects.primary_hazard)
+
+            projects.type=str(field[7]).strip('"')
+            #print(f'Project type: {projects.type}')
+            projects.project_title=str(field[8])
+            #print(f'Project title: {projects.project_title}')
+            projects.project_counties=str(field[9]).strip('"')
+            projects.status=str(field[10]).strip('"')
+            projects.subgrantee=str(field[11]).strip('"')
+            
+            data=str(field[12]).strip('"')
+            if data=='':
+                data='0.00'
+            data=data.rstrip('%')
+            projects.cost_share_percent=float(data)
+
+            data=str(field[13]).strip('"')
+            if data=='':
+                data='0.00'
+            data=data.lstrip('$')
+            #print(f'Fed share proposed: {data}')
+            projects.federal_share_proposed=float(data)
+
+            data=str(field[14]).strip('"')
+            data=data.lstrip('$')
+            if data=='':
+                data='0.00'
+            data=data.lstrip('$')
+            #print(f'Project amt: {data}')
+            projects.project_amount=data
+
+            data=str(field[15]).strip('"')
+            data=data.lstrip('$')
+            if data=='':
+                data='0.00'
+            #print(f'Fed share obligated: {data}')
+            projects.federal_share_obligated=float(data)
+            
+            data=str(field[16]).strip('"')
+            if data=='':
+                data='0.00'
+            projects.non_federal_share=float(data)
+
+            data=str(field[17]).strip('"')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+            #print(f'Disaster Declaration: {data}')
+            projects.date_initially_approved=data
+
+            data=str(field[18]).strip('"')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+            #print(f'PoP End: {data}')
+            projects.date_awarded=data
+
+            data=str(field[19]).strip('"')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+            #print(f'Disaster Declaration: {data}')
+            projects.date_approved=data
+
+            data=str(field[20]).strip('"')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+            #print(f'Disaster Declaration: {data}')
+            projects.date_closed=data
+
+            #projects.subgrantee_tribal_indicator=str(field[21]).strip('"')
+            #projects.phased_project=str(field[22]).strip('"')
+
+            data=str(field[23]).strip('"')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+            #print(f'Disaster Declaration: {data}')
+            projects.date_received=data
+
+            data=str(field[24]).strip('"')
+            #print(f'date_submitted: {data}')
+            data=pd.to_datetime(data)
+            data=str(data.date())
+            if data=='NaT':
+                data=None
+            projects.date_submitted=data
+
+            projects.environmental_document_type=str(field[25]).strip('"')
+            #print(f'environmental_document_type: {projects.environmental_document_type}')
+
+            projects.save()
+            count+=1
+            #print(count)
+
+        return HttpResponseRedirect(reverse_lazy('ProjectManagementApp:projectlist'))
+
+    elif request.method=='GET':
+        return render (request, 'upload_project.html')
 
 
-'''class CustomCSVView(FormView):
-    template_name = "upload.html"
-    form_class = CSVUploadForm
-
-    def handle(self, *args, **kwargs):
-        Disasters.objects.all().delete()
-        with open('test3.csv', encoding='utf-8-sig') as csv_file:
-            csv_reader=csv.DictReader(csv_file, delimiter=",")
-            for row in csv_reader:
-                disasters=Disasters()
-                disasters.disaster_number=row["Disaster Number"]
-                disasters.state=row["State"]
-                print(row)
-                disasters.save()
-                
-                disasters_resource = DisasterResource()
-    dataset=Dataset()'''
-
-
+def admin_view(request):
+    
+    return render(request,'administration.html')

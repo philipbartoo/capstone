@@ -5,6 +5,7 @@
 {% block content %}
 {% include 'navbar.html' %}
 {% block title %}{% endblock %}
+{% if user.is_authenticated %}
 <h1 class="heading">Add Project Enrichment Data</h1>
 <br/>
 <div class="container">
@@ -13,14 +14,16 @@
         <div class="col-sm-8">
             <form method="POST">
                 {% csrf_token %}
-                
+                {% crispy form %}
                 {{ form.as_p }}
-                <button class="btn btn-primary">Add</button>
+                <button class="btn btn-primary" type="submit">Add</button>
             </form>
         </div>
         <div class="col-sm-2"></div>
     </div>
 </div>
 
-
+{% else %}
+You must login first
+{% endif %}
 {% endblock %}

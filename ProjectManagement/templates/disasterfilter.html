@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+{% if user.is_authenticated %}
 
 <div class="container">
     
@@ -17,7 +18,7 @@
     <div class="row">
         {% for item in filter.qs %}
         <div class="paragraph list-item">
-            <a href="{% url 'disastersdetails' item.pk %}"
+            <a href="{% url 'ProjectManagementApp:disastersdetails' item.pk %}"
                     class="list-group-item list-group-item-action list-group-item-light">{{ item.state }} |
                     {{ item.disaster_number }}</a>
         </div>
@@ -29,5 +30,7 @@
 
 
 
-
+{% else %}
+You must login first
+{% endif %}
 {% endblock %}

@@ -1,23 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,300&family=Sora:wght@100&display=swap');
 
+html {
+  background-color: #E7E3d4;
+}
+
+main {
+  background-color: #E7E3d4;
+}
+
+
+a:active {
+  color:white;
+}
+
+.navbar-background {
+  background-color: #444955;
+}
+
+.navbar-background {
+  color: white;
+}
+
+.background-detail {
+  background-color: #E7E3d4;
+}
 
 .sidenav-details {
   height:100% !important;
 }
 
-.bg-menu:hover {
-  background-color:#0079C1;
-  color:#FFFFFF;
-}
+
 
 .clickable {
   cursor:pointer; 
 }
 
-.list-item {
-  list-style-type: none;
-}
+
 
 .card-padding {
   padding: 7px 7px;
@@ -51,7 +70,6 @@
   width: auto;
   height: 50px;
   line-height: 2.2em;
-  color: whitesmoke;
   font-size: 1.5em;
   text-align: center;
   font-family: 'Sora', sans-serif;
@@ -59,20 +77,37 @@
 
 .heading {
   font-family:Georgia, 'Times New Roman', Times, serif;
-  font-size:xx-large;
   color:white;
   text-align: center;
-  font-size: 3em;
+  font-size: 2em;
   background-color:#3B8BEB;
   padding:30px;
 }
 
+.remove-bullets {
+  list-style-type: none;
+}
+
+#btn1 {
+  display:visible;
+}
+
+#btn2 {
+  display:none;
+}
+
+
 .paragraph {
-  color: #333333;
+  color: black;
   font-family: 'Sora', sans-serif;
   font-size: 1.2em;
   line-height: 1.4em;
   letter-spacing: 0.03em;
+  background-color: #E7E3d4;
+}
+
+.paragraph:hover {
+  background-color:#c4dbf6 !important;
 }
 
 .item {

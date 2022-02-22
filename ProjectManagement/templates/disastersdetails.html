@@ -5,12 +5,13 @@
 {% block title %}{{ disaster.disaster_number }}{% endblock %}
 {% block content %}
 {% include 'navbar.html' %}
+{% if user.is_authenticated %}
 
 <div class="container">
   <div class="row">
     <div class="col-lg-8">
       <div class="row">
-        <h1 class="heading col-lg-10">Disaster Details</h1>
+        <h1 class="heading">Disaster Details</h1>
         <div class="col-lg-4 p-2 label">State
           <div class="card card-padding">{{ disasters.state }}</div>
         </div>
@@ -18,20 +19,26 @@
           <div class="card card-padding">{{ disasters.disaster_number }} </div>
         </div>
         <div class="col-lg-4 p-2 label">Declaration Date
-          <div class="card card-padding">{{ diasters.declaration_date }} </div>
+          <div class="card card-padding">{{ disasters.declaration_date }} </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-4 p-2 label">Approved Projects
-          <div class="card card-padding">{{ disasters.number_of_approved_projects }} </div>
+        <div class="col-lg-6 p-2 label">Disaster Closeout Status
+          <div class="card card-padding">{{ disasters.disaster_closeout_status }}</div>
         </div>
-        <div class="col-lg-4 p-2 label">Pending Projects
-          <div class="card card-padding">{{ disasters.number_of_pending_projects }}</div>
-        </div>
-        <div class="col-lg-4 p-2 label">HMGP Closeout Status
+        <div class="col-lg-6 p-2 label">HMGP Closeout Status
           <div class="card card-padding">{{ disasters.hmgp_closeout_status }}</div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-lg-6 p-2 label">Approved Projects
+          <div class="card card-padding">{{ disasters.number_of_approved_projects }} </div>
+        </div>
+        <div class="col-lg-6 p-2 label">Pending Projects
+          <div class="card card-padding">{{ disasters.number_of_pending_projects }}</div>
+        </div>
+      </div>
+      
       <div class="row">
         <div class="col-lg-6 p-2 label">Due Date For New Apps
           <div class="card card-padding">{{ disasters.disaster_due_date_for_new_apps }} </div>
@@ -71,7 +78,7 @@
       </div>
       <div class="row">
         <div class="col-lg-12 text-center projected-available">Projected Costs</div>
-        <div class="col-lg-6 p-2">Initiative
+        <div class="col-lg-6 p-2 label">Initiative
           <div class="card card-padding">${{ disasters.projected_initiative_amount|intcomma }} </div>
         </div>
         <div class="col-lg-6 p-2 label">Planning
@@ -88,7 +95,7 @@
       </div>
       <div class="row">
         <div class="col-lg-12 text-center projected-available">Available Costs</div>
-        <div class="col-lg-6 p-2">Initiative
+        <div class="col-lg-6 p-2 label">Initiative
           <div class="card card-padding">${{ disasters.available_initiative_amount|intcomma }} </div>
         </div>
         <div class="col-lg-6 p-2 label">Planning
@@ -109,11 +116,11 @@
   
     <div class="col-sm-4">
       <div class="row">
-        <div class="heading">Project List</div>
+        <h1 class="heading">Project List</h1>
         {% for project in object.projects_set.all %}
         <div class="text-center">
           <div class ="paragraph list-item">
-            <a href="{% url 'projectdetail' project.pk %}"
+            <a href="{% url 'ProjectManagementApp:projectdetail' project.pk %}"
                 class="list-group-item list-group-item-action list-group-item-light">{{project.project_identifier}}</a>
           </div>
         </div>
@@ -126,5 +133,7 @@
   </div>
 </div>
 
-
+{% else %}
+You must login first
+{% endif %}
 {% endblock %}

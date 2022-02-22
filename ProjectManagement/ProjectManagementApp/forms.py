@@ -35,15 +35,3 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ('first_name','last_name', 'username', 'email', 'password1' ,'password2' )
     
-'''class UploadDisasterForm(forms.ModelForm):
-    class Meta:
-        model=Csvs'''
-        
-
-'''class CsvModelForm(forms.ModelForm):
-    class Meta:
-        model = Csvs
-        fields = ('disaster_file',)
-
-class ImportForm(forms.Form):
-    import_file = forms.FileField(allow_empty_file=False,validators=[FileExtensionValidator(allowed_extensions=['csv', 'xls', 'xlsx'])], label="")'''

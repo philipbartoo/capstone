@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}Logout{% endblock %}
 {% block content %}
-<br /><br />
 <h1 class="heading">Thanks for Stopping By!</h1>
-
-<div class="btn btn-secondary">
-    <a href="{% url 'login' %}">Login</a>
+<div class="container">
+    <div class="row">
+        <div class="text-center"><br /><br />
+            <a class="nav-link" href="{% url 'ProjectManagementApp:login' %}">
+                <button id="logout-in-btn" class="btn btn-primary" type="button">Login</button></a>
+        </div>
+    </div>
 </div>
+
 
 
 
