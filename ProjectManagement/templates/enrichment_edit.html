@@ -7,31 +7,306 @@
 {% include 'navbar.html' %}
 {% if user.is_authenticated %}
 <h1 class='heading'>Project Enrichment Data for {{ enrichment.assigned_project_identifier }}</h1>
-<br/>
+<br />
 <div class="container">
   <div class="row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
       <form method="POST">
         {% csrf_token %}
-        
-        {{ form.as_p }}
+        <div class="row">
+          <div class="col-sm-12 text-center projected-available m-3">Primary Data</div>
+          <div class="col-sm-12">
+            {{ form.assigned_project_identifier|as_crispy_field }}
+          </div>
+          <div class="col-sm-6">
+            {{ form.project_deliverable_number|as_crispy_field }}
+          </div>
+          <div class="col-sm-6">
+            {{ form.project_deliverable_title|as_crispy_field }}
+          </div>
+          <div class="row initial-review mt-3">
+            <div class="col-sm-12 text-center projected-available">Initial Review</div>
+            <div class="col-sm-4">
+              {{ form.project_category|as_crispy_field }}
+            </div>
+            <div class="col-sm-4">
+              {{ form.complexity|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 my-auto">
+              {{ form.phased_project|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row initial-review mt-3">
+            <div class="col-sm-6">
+              {{ form.program_reviewer|as_crispy_field }}
+            </div>
+            <div class="col-sm-6">
+              {{ form.date_assigned_to_program_reviewer|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row initial-review mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.submitted_off_waitlist|as_crispy_field }}
+            </div>
+            <div class="col-sm-6">
+              {{ form.submitted_off_waitlist_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row initial-review mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.initial_review_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-6">
+              {{ form.initial_review_complete_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row text-center ehp-triage mt-3">
+            <div class="col-sm-12 text-center projected-available">EHP Triage</div>
+            <div class="col-sm-6">
+              {{ form.ehp_reviewer|as_crispy_field }}
+            </div>
+            <div class="col-sm-6">
+              {{ form.date_assigned_to_ehp_reviewer|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-triage mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.ehp_triage_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-6">
+              {{ form.ehp_triage_complete_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-12 text-center projected-available">EHP Review</div>
+            <div class="col-sm-6 my-auto">
+              {{ form.archaeological_monitoring_required|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 my-auto">
+              {{ form.clean_water_act_coordination_required|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.tribal_monitoring_required|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 my-auto">
+              {{ form.nfms_no_effect|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.usfws_no_effect|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 my-auto">
+              {{ form.eo_11988_90|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-6">
+              {{ form.catex|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 my-auto">
+              {{ form.esa_sec_7_notes|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-6">
+              {{ form.nepa_level|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 my-auto">
+              {{ form.lead_federal_agency|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-4 mt-auto">
+              {{ form.ehp_transmital_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.ehp_application_completeness_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.ehp_clearance_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-6 mt-auto">
+              {{ form.ehp_kickoff_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.ehp_transmital_date_phase_2|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-6 mt-auto">
+              {{ form.eo_inital_public_notice_posted_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.eo_final_public_notice_posted|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-6 mt-auto">
+              {{ form.hmtap_contractor|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.sent_to_contractor|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row  ehp-review mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.additional_environmental_attachments|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 my-auto">
+              {{ form.rec_complete|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row ehp-review mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.ehp_review_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 my-auto">
+              {{ form.ehp_review_complete_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row  hma-review mt-3">
+            <div class="col-sm-12 text-center projected-available">HMA Review</div>
+            <div class="col-sm-4 my-auto">
+              {{ form.lpn_needed|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.lpn_available_to_obligate_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.lpn_submitted_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row  hma-review mt-3">
+            <div class="col-sm-4 mt-auto">
+              {{ form.spend_plan_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 my-auto">
+              {{ form.hma_review_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.hma_review_complete_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row  award mt-3">
+            <div class="col-sm-12 text-center projected-available">Award</div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.actual_project_completion_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.award_letter_activity_complete_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.anticipated_activity_completion_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row  award mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.mitigation_coorespondence_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.plan_expiration_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row  award mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.award_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.award_complete_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row  closeout mt-3">
+            <div class="col-sm-12 text-center projected-available">Closeout</div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.actual_activity_completion_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.site_visit_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row closeout mt-3">
+            <div class="col-sm-6 my-auto">
+              {{ form.non_compliance_memo|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.closeout_submission_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row  closeout mt-3">
+            <div class="col-sm-4 my-auto ">
+              {{ form.financial_specialist_final_review|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 my-auto ">
+              {{ form.deobligation_required|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.amount_deobligated|as_crispy_field|intcomma }}
+            </div>
+          </div>
+          <div class="row  closeout mt-3">
+            <div class="col-sm-6 my-auto ">
+              {{ form.ehp_final_review_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.ehp_final_review_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row closeout mt-3">
+            <div class="col-sm-6 my-auto ">
+              {{ form.program_final_review_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.program_final_review_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row closeout mt-3">
+            <div class="col-sm-6 mt-auto ">
+              {{ form.closeout_complete|as_crispy_field }}
+            </div>
+            <div class="col-sm-6 mt-auto">
+              {{ form.closeout_complete_date|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row notes mt-3">
+            <div class="col-sm-12 text-center projected-available">Comments/RFI</div>
+            <div class="col-sm-4 my-auto">
+              {{ form.rfi_required|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 mt-auto">
+              {{ form.rfi_sent_date|as_crispy_field }}
+            </div>
+            <div class="col-sm-4 my-auto">
+              {{ form.awaiting_rfi_response|as_crispy_field }}
+            </div>
+          </div>
+          <div class="row notes mt-3">
+            <div class="col-sm-12 mt-auto">
+              {{ form.comments|as_crispy_field }}
+            </div>
+          </div>
+        </div>
         <div class="container">
           <div class="row">
             <div class="col-sm-8">
-              <button class="btn btn-primary m-3">Update</button> <a href="{% url 'ProjectManagementApp:home' %}" class="btn btn-secondary m-3">Cancel</a>
+              <button class="btn btn-primary m-3">Update</button> <a
+                href="{% url 'ProjectManagementApp:enrichment_list' %}" class="btn btn-secondary m-3">Cancel</a>
             </div>
             <div class="col-sm-4">
-              <a href="{% url 'ProjectManagementApp:enrichment_delete' enrichment.pk %}" class="btn btn-warning m-3">Delete</a>
+              <a href="{% url 'ProjectManagementApp:enrichment_delete' enrichment.pk %}"
+                class="btn btn-warning m-3">Delete</a>
             </div>
           </div>
         </div>
       </form>
-      <div class="col=sm-2"></div>
+      <div class="col=sm-1"></div>
     </div>
   </div>
-
-
   {% else %}
   You must login first
   {% endif %}

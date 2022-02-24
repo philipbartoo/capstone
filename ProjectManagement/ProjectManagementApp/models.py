@@ -67,9 +67,9 @@ class Projects(models.Model):
         return self.project_identifier + ' | ' + self.project_title
 
 class Enrichment(models.Model):
-    assigned_project_identifier = models.ForeignKey(Projects,on_delete=models.CASCADE)
-    project_deliverable_number = models.CharField(max_length=6,help_text="Enter unique tracking number")
-    project_deliverable_title = models.CharField(max_length=100,help_text="Enter a Title")
+    assigned_project_identifier = models.ForeignKey(Projects,null=True,on_delete=models.CASCADE)
+    project_deliverable_number = models.CharField(max_length=6)
+    project_deliverable_title = models.CharField(max_length=100)
     submitted_off_waitlist = models.BooleanField(default=False,null=True, blank=True)
     submitted_off_waitlist_date = models.DateField(blank=True,null=True)
     program_reviewer = models.CharField(max_length=100,null=True, blank=True)

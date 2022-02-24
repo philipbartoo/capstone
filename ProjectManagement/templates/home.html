@@ -7,45 +7,41 @@
 <div class="row">
   <div class="d-inline-flex">
     <div class="d-flex h-100 sidenav-details flex-column flex-shrink-0 p-3 text-white text-center navbar-background"
-      style="width: 200px;">
+      style="width: 250px;">
       <h1 class="fs-4">Disaster Filter</h1>
       <hr>
       <div class="nav nav-pills flex-column mb-auto navbar-background">
         <div class="nav-item">
-          <form method="get">
+          <form method="get" id="disasterfilter">
             {% csrf_token %}
             <div class="form-row">
-              <div class="form-group">{{ filter.form|crispy }}</div>
+              <div class="form-group filter1">{{ filter.form|crispy }}</div>
             </div>
             <div class="text-center">
-              <button id="filterbtn1" class="btn btn-outline-primary input-group-append mt-4" type="submit">Filter</button>
-              <button type="button" onclick="disasterfilter();" class="btn btn-outline-warning input-group-append mt-4">Reset</button>
+              <button id="filterbtn1" class="btn btn-outline-primary input-group-append mt-4"
+                type="submit">Filter</button>
             </div>
           </form>
         </div>
       </div>
     </div>
-    
     <div class="container-fluid p-0 background-detail">
       <h1 class="heading">Disaster List</h1>
-        <div class="container"></div>
-      
-        <div class="row">
-          {% for item in filter.qs %}
-          <div class="list-item">
-            <a href="{% url 'ProjectManagementApp:disastersdetails' item.pk %}"
-              class="paragraph list-group-item list-group-item-action list-group-item-light">{{ item.state }} |
-              {{ item.disaster_number }}</a>
-          </div>
-          {% endfor %}
+      <div class="container"></div>
+      <div class="row">
+        {% for item in filter.qs %}
+        <div class="list-item d-flex bd-highlight">
+          <a href="{% url 'ProjectManagementApp:disastersdetails' item.pk %}"
+            class="paragraph list-group-item list-group-item-action list-group-item-light">{{ item.state }} |
+            {{ item.disaster_number }} <span class="float-end text-end">Declared: {{ item.declaration_date }}</span>
+          </a>
         </div>
+        {% endfor %}
       </div>
-    </div>
     </div>
   </div>
 </div>
 {% else %}
 You must login first
 {% endif %}
-
 {% endblock content %}

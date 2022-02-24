@@ -1,6 +1,6 @@
 from django.urls import path, include
 from ProjectManagementApp import views
-from .views import DisastersDetailView, DisastersListView,LoginInterfaceView,LogoutInterfaceView, ProjectDetailView,SignupView,EnrichmentListView,EnrichmentAddView,EnrichmentDetailView,EnrichmentEditView,EnrichmentDeleteView,UserEditView
+from .views import DisastersDetailView, DisastersListView,LoginInterfaceView,LogoutInterfaceView, ProjectDetailView,SignupView,EnrichmentListView,EnrichmentAddView,EnrichmentDetailView,EnrichmentEditView,EnrichmentDeleteView,UserEditView,DataView
 from . import views
 from django.views.generic.base import RedirectView
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('upload_disaster',views.upload_disaster_file, name='upload_disaster'),
     path('upload_project',views.upload_project_file,name='upload_project'),
     path('administration',views.admin_view, name='administration'),
+    path('data', DataView.as_view(),name='data')
     
 
     

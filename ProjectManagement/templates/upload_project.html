@@ -5,32 +5,26 @@
 {% include 'navbar.html' %}
 {% if user.is_authenticated %}
 
-<div class="heading">Upload Project File</div>
+<div class="heading">Upload Project Data</div>
 <br />
 <div class="container">
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
             <form action="{% url 'ProjectManagementApp:upload_project' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="project_file">
-                <span onclick = "hideshow();">
-                    <input type="submit" class="btn-primary btn" value="Import" id="btn1">
-                </span>
-                
-                <button class="btn btn-primary" type="button" id="btn2" disabled>
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Loading...
-                  </button>
+                <div class="container drop-zone">
+                    <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                    {% csrf_token %}
+                    <input type="file" name="project_file" class="drop-zone__input">
+                </div>
+                <input type="submit" class="btn-primary btn m-3" value="Import" id="btn1">
             </form>
         </div>
+        
         <div class="col-sm-2"></div>
-
-    </div>
-    
-
     </div>
 </div>
+<div class="container text-center">Please note that this may take awhile, you will be automatically returned to the home screen when uploading is complete.</div>
 {% else %}
 You must login first
 {% endif %}

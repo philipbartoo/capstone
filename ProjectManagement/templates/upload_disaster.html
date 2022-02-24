@@ -4,23 +4,24 @@
 {% block content %}
 {% include 'navbar.html' %}
 {% if user.is_authenticated %}
-<div class="heading">Upload Disaster File</div>
+<div class="heading">Upload Disaster Data</div>
 <br />
 <div class="container">
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
-            
             <form action="{% url 'ProjectManagementApp:upload_disaster' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" name="disaster_file">
-                <input type="submit" class="btn-primary btn" value="Import">
+                <div class="container drop-zone">
+                    <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                    {% csrf_token %}
+                    <input type="file" name="disaster_file" class="drop-zone__input">
+                </div>
+                <input type="submit" class="btn-primary btn m-3" value="Import">
             </form>
         </div>
         <div class="col-sm-2"></div>
     </div>
 </div>
-
 {% else %}
 You must login first
 {% endif %}

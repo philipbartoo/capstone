@@ -3,29 +3,16 @@ from encodings import utf_8
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-#from django.contrib.auth import authenticate
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserChangeForm
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView,FormView,View
 from .models import Disasters, Enrichment, Projects,Csvs
 from .forms import RegisterForm,NewEnrichmentForm,EditEnrichmentForm
 from django.http.response import HttpResponseRedirect
 from .filters import DisasterFilter,ProjectFilter
-#from django_filters.views import FilterView
-#from tablib import Dataset
-#from .resources import DisasterResource
-import csv
-#from django.views.generic.edit import FormView
-from datetime import datetime
-#from dateutil import parser
 import pandas as pd
-import numpy as np
-import re
-
-
 
 class LoginInterfaceView(LoginView):
     template_name = 'login.html'
@@ -47,7 +34,6 @@ class UserEditView(UpdateView):
     def get_object(self):
         return self.request.user
 
-
 class HomeView(LoginRequiredMixin,ListView):
     model = Disasters
     template_name = 'home.html'
@@ -57,64 +43,53 @@ class HomeView(LoginRequiredMixin,ListView):
     def get(self, request, *args, **kwargs):
         return HttpResponse("User Profile View")
 
-
-
-
 class DisastersDetailView(DetailView):
     model = Disasters
     template_name = 'disastersdetails.html'
     login_required=True
     redirect_field_name = 'redirect_to'
     
-
 class DisastersListView(ListView):
     model = Disasters
     template_name = 'disasterslist.html'
     login_required=True
 
+class DataView(ListView):
+    model=Disasters
+    template_name='disasterdata.html'
 
-    
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["qs"]=Disasters.objects.order_by('-twelve_month_lock_in_amount')[:10]
+        return context
 
 class ProjectDetailView(DetailView):
     model = Projects
     template_name = 'projectdetails.html'
     
-
 class ProjectListView(ListView):
     model = Projects
     template_name = 'projectlist.html'
     
-
 class EnrichmentListView(ListView):
     model = Enrichment
     template_name = 'enrichment_list.html'
     
-
 class EnrichmentAddView(CreateView):
     form_class = NewEnrichmentForm
     template_name = 'enrichment_add.html'
-    success_url=reverse_lazy('ProjectManagementApp:home')
-    
-
-    '''def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())'''
+    success_url=reverse_lazy('ProjectManagementApp:enrichment_list')
 
 class EnrichmentDetailView(DetailView):
     model = Enrichment
     template_name = 'enrichment_detail.html'
     
-
 class EnrichmentEditView(UpdateView):
     model = Enrichment
     form_class = EditEnrichmentForm
     template_name = 'enrichment_edit.html'
-    success_url = reverse_lazy('ProjectManagementApp:home')
+    success_url = reverse_lazy('ProjectManagementApp:enrichment_list')
     
-
 class EnrichmentDeleteView(DeleteView):
     model = Enrichment
     template_name = 'enrichment_delete.html'
@@ -288,6 +263,7 @@ def upload_disaster_file(request):
             #disasters.state=line[2]
             disasters.save()
             count+=1
+            print(count)
 
         return HttpResponseRedirect(reverse_lazy('ProjectManagementApp:home'))
             
@@ -308,13 +284,9 @@ def upload_project_file(request):
                 count+=1
                 continue
             
-            
             line=line.decode("utf-8")
             line=str(line)
-            
-            #line=line.replace('\r','')
-            #line=line.replace('\n','')
-            #line=line.replace('\b','')
+
             field=line.split('","')
            
             projects=Projects()
@@ -407,9 +379,6 @@ def upload_project_file(request):
             #print(f'Disaster Declaration: {data}')
             projects.date_closed=data
 
-            #projects.subgrantee_tribal_indicator=str(field[21]).strip('"')
-            #projects.phased_project=str(field[22]).strip('"')
-
             data=str(field[23]).strip('"')
             data=pd.to_datetime(data)
             data=str(data.date())
@@ -431,7 +400,7 @@ def upload_project_file(request):
 
             projects.save()
             count+=1
-            #print(count)
+            print(count)
 
         return HttpResponseRedirect(reverse_lazy('ProjectManagementApp:projectlist'))
 

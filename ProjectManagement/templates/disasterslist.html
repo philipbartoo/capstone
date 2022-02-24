@@ -4,8 +4,7 @@
 {% block content %}
 {% include 'navbar.html' %}
 {% if user.is_authenticated %}
-
-<h1 class="heading">List of Disasters</h1>
+<h1 class="heading">Disaster List</h1>
 <br />
 <div class="container">
   <div class="row">
@@ -13,10 +12,11 @@
     <div class="col-sm-10">
       <ul>
         {% for disasters in object_list %}
-        <li class="paragraph list-item remove-bullets">
+        <li class="paragraph list-item remove-bullets d-flex bd-highlight">
           <a href="{% url 'ProjectManagementApp:disastersdetails' disasters.pk %}"
             class="paragraph list-group-item list-group-item-action list-group-item-light">
-            {{disasters.state}} | {{ disasters.disaster_number}}</a>
+            {{disasters.state}} | {{ disasters.disaster_number}} <span class="float-end text-end">Declared:
+              {{ disasters.declaration_date }}</span></a>
         </li>
         {% endfor %}
       </ul>
@@ -24,8 +24,6 @@
     <div class="col-sm-1"></div>
   </div>
 </div>
-
-
 {% else %}
 You must login first
 {% endif %}

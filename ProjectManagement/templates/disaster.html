@@ -4,7 +4,6 @@
 {% block title %}{{ disaster.disaster_number }}{% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
-
 <div class="container">
   <div class="row">
     <div class="col-sm-8">{% include 'disasterdetails.html' %}
@@ -13,8 +12,6 @@
     </div>
   </div>
 </div>
-
-
 {% else %}
 You must login first
 {% endif %}

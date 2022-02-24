@@ -8,7 +8,7 @@
 <div class="row">
   <div class="d-inline-flex">
     <div class="d-flex h-100 sidenav-details flex-column flex-shrink-0 p-3 text-white text-center navbar-background"
-      style="width: 200px;">
+      style="width: 250px;">
       <span class="fs-4">Project Filter</span>
       <hr>
       <div class="nav nav-pills flex-column mb-auto navbar-background">
@@ -19,40 +19,29 @@
               <div class="form-group">{{ project_filter.form|crispy }}</div>
             </div>
             <div class="text-center">
-              <button id="filterbtn2" class="btn btn-outline-primary input-group-append mt-4" type="submit">Filter</button>
-              <button type="button" onclick="projectfilter();" class="btn btn-outline-warning input-group-append mt-4">Reset</button>
+              <button id="filterbtn2" class="btn btn-outline-primary input-group-append mt-4"
+                type="submit">Filter</button>
             </div>
           </form>
         </div>
       </div>
     </div>
-    
     <div class="container-fluid p-0 background-detail">
       <h1 class="heading">Project List</h1>
-
       <div class="container"></div>
       <div class="row">
         {% for item in project_filter.qs %}
         <div class="list-item">
           <a href="{% url 'ProjectManagementApp:projectdetail' item.pk %}"
-            class="paragraph list-group-item list-group-item-action list-group-item-light">{{ item.project_identifier }} |
+            class="paragraph list-group-item list-group-item-action list-group-item-light">{{ item.project_identifier }}
+            |
             {{ item.project_title }}</a>
         </div>
         {% endfor %}
       </div>
     </div>
-  </div></div>
+  </div>
 </div>
-
-
-
-
-
-
-
-
-   
-    
 {% else %}
 You must login first
 {% endif %}

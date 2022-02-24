@@ -1,5 +1,6 @@
 import django_filters
 from .models import Enrichment,Disasters,Projects
+from django_filters.widgets import DateRangeWidget
 
 JURISDICTION_CHOICES=(
     ('American Samoa','American Samoa'),
@@ -23,7 +24,7 @@ CLOSEOUT_STATUS_CHOICES=(
 class DisasterFilter(django_filters.FilterSet):
     state=django_filters.ChoiceFilter(choices=JURISDICTION_CHOICES,null_value=None)
     disaster_number=django_filters.CharFilter(label='Disaster Number')
-    declaration_date=django_filters.DateFilter(label='Disaster Date')
+    declaration_date=django_filters.DateFromToRangeFilter(label='Disaster Date',widget=DateRangeWidget(attrs={'type': 'date'}))
     disaster_closeout_status=django_filters.ChoiceFilter(label='Disaster Status',choices=CLOSEOUT_STATUS_CHOICES,null_value=None)
     hmgp_closeout_status=django_filters.ChoiceFilter(label='HMGP Status',choices=CLOSEOUT_STATUS_CHOICES,null_value=None)
 

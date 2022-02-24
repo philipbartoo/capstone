@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% load static %}
-
 {% block title %}{{ disaster.disaster_number }}{% endblock %}
 {% block content %}
 {% include 'navbar.html' %}
 {% if user.is_authenticated %}
-
 <div class="container">
   <div class="row">
     <div class="col-lg-8">
@@ -38,7 +36,7 @@
           <div class="card card-padding">{{ disasters.number_of_pending_projects }}</div>
         </div>
       </div>
-      
+
       <div class="row">
         <div class="col-lg-6 p-2 label">Due Date For New Apps
           <div class="card card-padding">{{ disasters.disaster_due_date_for_new_apps }} </div>
@@ -111,28 +109,22 @@
         </div>
       </div>
     </div>
-    
-
-  
     <div class="col-sm-4">
       <div class="row">
         <h1 class="heading">Project List</h1>
         {% for project in object.projects_set.all %}
         <div class="text-center">
-          <div class ="paragraph list-item">
+          <div class="paragraph list-item">
             <a href="{% url 'ProjectManagementApp:projectdetail' project.pk %}"
-                class="list-group-item list-group-item-action list-group-item-light">{{project.project_identifier}}</a>
+              class="list-group-item list-group-item-action list-group-item-light">{{project.project_identifier}}</a>
           </div>
         </div>
-        
-       
         {% endfor %}
       </div>
     </div>
   </div>
-  </div>
 </div>
-
+</div>
 {% else %}
 You must login first
 {% endif %}
